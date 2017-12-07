@@ -611,6 +611,7 @@ void GazeboMavlinkInterface::OnUpdate(const common::UpdateInfo& /*_info*/) {
   }
 
   // vision position estimate
+  /*
   double dt_ev = current_time.Double() - last_ev_time_.Double();
   if (dt_ev > ev_update_interval_) {
     //update noise paramters
@@ -641,6 +642,7 @@ void GazeboMavlinkInterface::OnUpdate(const common::UpdateInfo& /*_info*/) {
 
     last_ev_time_ = current_time;
   }
+  */
 }
 
 void GazeboMavlinkInterface::send_mavlink_message(const mavlink_message_t *message, const int destination_port)
