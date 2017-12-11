@@ -529,7 +529,9 @@ void GazeboMavlinkInterface::OnUpdate(const common::UpdateInfo&  /*_info*/) {
     // send VISION_POSITION_ESTIMATE Mavlink msg
     mavlink_message_t msg_;
     mavlink_msg_vision_position_estimate_encode_chan(1, 200, MAVLINK_COMM_0, &msg_, &vp_msg);
-    send_mavlink_message(&msg_);
+    // disable vision message so ROS can send one instead
+    // TODO: make this an option
+    //send_mavlink_message(&msg_);
 
     last_ev_time_ = current_time;
   }
