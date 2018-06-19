@@ -507,36 +507,34 @@ void GazeboMavlinkInterface::ImuCallback(ImuPtr& imu_message) {
     sensor_msg.zmag = mag_b.Z();
 
     // calculate abs_pressure using an ISA model for the tropsphere (valid up to 11km above MSL)
-    const float lapse_rate = 0.0065f; // reduction in temperature with altitude (Kelvin/m)
-    const float temperature_msl = 288.0f; // temperature at MSL (Kelvin)
-    float alt_msl = (float)alt_home - pos_n.Z();
-    float temperature_local = temperature_msl - lapse_rate * alt_msl;
-    float pressure_ratio = powf((temperature_msl/temperature_local) , 5.256f);
-    const float pressure_msl = 101325.0f; // pressure at MSL
-    sensor_msg.abs_pressure = pressure_msl / pressure_ratio;
+    const double lapse_rate = 0.0065; // reduction in temperature with altitude (Kelvin/m)
+    const double temperature_msl = 288.15; // temperature at MSL (Kelvin)
+    const double alt_msl = alt_home - pos_n.Z();
+    const double temperature_local = temperature_msl - lapse_rate * alt_msl;
+    const double pressure_ratio = pow((temperature_msl/temperature_local), 5.2557);
+    const double pressure_msl = 101325.0; // pressure at MSL
+
+    const double abs_pressure = pressure_msl / pressure_ratio;
 
     // generate Gaussian noise sequence using polar form of Box-Muller transformation
     // http://www.design.caltech.edu/erik/Misc/Gaussian.html
-    double x1, x2, w, y1, y2;
+    double x1, x2, w;
     do {
      x1 = 2.0 * (rand() * (1.0 / (double)RAND_MAX)) - 1.0;
      x2 = 2.0 * (rand() * (1.0 / (double)RAND_MAX)) - 1.0;
+
      w = x1 * x1 + x2 * x2;
-    } while ( w >= 1.0 );
-    w = sqrt( (-2.0 * log( w ) ) / w );
-    y1 = x1 * w;
-    y2 = x2 * w;
+    } while (w >= 1.0);
 
     // Apply 1 Pa RMS noise
-    float abs_pressure_noise = 1.0f * (float)w;
-    sensor_msg.abs_pressure += abs_pressure_noise;
+    const double abs_pressure_noise = sqrt((-2.0 * log(w)) / w);
 
     // convert to hPa
-    sensor_msg.abs_pressure *= 0.01f;
+    sensor_msg.abs_pressure = (abs_pressure + abs_pressure_noise) / 100;
 
     // calculate density using an ISA model for the tropsphere (valid up to 11km above MSL)
-    const float density_ratio = powf((temperature_msl/temperature_local) , 4.256f);
-    float rho = 1.225f / density_ratio;
+    const double density_ratio = pow((temperature_msl/temperature_local), 4.256);
+    const double rho = 1.225 / density_ratio;
 
     // calculate pressure altitude including effect of pressure noise
     sensor_msg.pressure_alt = alt_msl - abs_pressure_noise / (gravity_W_.Length() * rho);
