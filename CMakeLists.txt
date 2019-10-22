@@ -37,16 +37,16 @@ find_program(px4 REQUIRED)
 find_package(PythonInterp REQUIRED)
 find_package(OpenCV REQUIRED)
 find_package(TinyXML REQUIRED)
-if (BUILD_GSTREAMER_PLUGIN)
+#if (BUILD_GSTREAMER_PLUGIN)
   set(GStreamer_FIND_VERSION "1.0")
   find_package(GStreamer)
-  if (GSTREAMER_FOUND)
-    if("${GAZEBO_VERSION}" VERSION_LESS "8.0")
-      find_package (Qt4)
-      include (${QT_USE_FILE})
-    endif()
-  endif()
-endif()
+  #if (GSTREAMER_FOUND)
+    #if("${GAZEBO_VERSION}" VERSION_LESS "8.0")
+      #find_package (Qt5Widgets)
+      #include (${QT_USE_FILE})
+    #endif()
+  #endif()
+#endif()
 
 pkg_check_modules(OGRE OGRE)
 
@@ -304,6 +304,7 @@ add_library(gazebo_multirotor_base_plugin SHARED src/gazebo_multirotor_base_plug
 add_library(gazebo_wind_plugin SHARED src/gazebo_wind_plugin.cpp)
 add_library(gazebo_magnetometer_plugin SHARED src/gazebo_magnetometer_plugin.cpp src/geo_mag_declination.cpp)
 add_library(gazebo_barometer_plugin SHARED src/gazebo_barometer_plugin.cpp)
+add_library(hello_world_plugin SHARED src/hello_world.cpp)
 
 set(plugins
   gazebo_geotagged_images_plugin
@@ -323,6 +324,7 @@ set(plugins
   gazebo_wind_plugin
   gazebo_magnetometer_plugin
   gazebo_barometer_plugin
+  hello_world_plugin
   )
 
 foreach(plugin ${plugins})
@@ -351,24 +353,27 @@ if (BUILD_ROS_INTERFACE)
   )
 endif()
 
-if (GSTREAMER_FOUND)
+#if (GSTREAMER_FOUND)
   add_library(gazebo_gst_camera_plugin SHARED src/gazebo_gst_camera_plugin.cpp)
   set(plugins
     ${plugins}
     gazebo_gst_camera_plugin
   )
   message(STATUS "Found GStreamer: adding gst_camera_plugin")
-  if("${GAZEBO_VERSION}" VERSION_LESS "8.0")
-    QT4_WRAP_CPP(headers_MOC include/gazebo_video_stream_widget.h)
+  #if("${GAZEBO_VERSION}" VERSION_LESS "8.0")
+    find_package( Qt5Core REQUIRED )
+    find_package( Qt5Widgets REQUIRED )
+    find_package( Qt5Gui REQUIRED )
+    QT5_WRAP_CPP(headers_MOC include/gazebo_video_stream_widget.h)
     add_library(gazebo_video_stream_widget SHARED ${headers_MOC} src/gazebo_video_stream_widget.cpp)
-    target_link_libraries(gazebo_video_stream_widget ${GAZEBO_LIBRARIES} ${QT_LIBRARIES} ${PROTOBUF_LIBRARIES})
+    target_link_libraries(gazebo_video_stream_widget ${GAZEBO_LIBRARIES} ${QT_LIBRARIES} ${PROTOBUF_LIBRARIES} Qt5::Core)
     set(plugins
       ${plugins}
       gazebo_video_stream_widget
     )
     message(STATUS "Found GStreamer: adding gst_video_stream_widget")
-  endif()
-endif()
+  #endif()
+#endif()
 
 # Linux is not consistent with plugin availability, even on Gazebo 7
 #if("${GAZEBO_VERSION}" VERSION_LESS "7.0")

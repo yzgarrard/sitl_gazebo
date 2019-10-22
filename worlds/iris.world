@@ -1,22 +1,76 @@
 <?xml version="1.0" ?>
 <sdf version="1.5">
   <world name="default">
+    <gui>
+      <plugin name="video_widget" filename="libgazebo_video_stream_widget.so"/>
+    </gui>
+	<plugin name="hello_world" filename="libhello_world_plugin.so"/>
     <!-- A global light source -->
     <include>
       <uri>model://sun</uri>
     </include>
+	
     <!-- A ground plane -->
     <include>
       <uri>model://ground_plane</uri>
     </include>
+	
     <!-- An asphalt plane -->
     <include>
       <uri>model://asphalt_plane</uri>
     </include>
+	
     <include>
-      <uri>model://iris</uri>
-      <pose>1.01 0.98 0.83 0 0 1.14</pose>
+      <uri>model://iris_fpv_cam</uri>
+      <pose>0 0 0 0 0 0</pose>
     </include>
+	
+    <!-- An actor -->
+  	<actor name="animated_box">
+		  <link name="link">
+		    <visual name="visual">
+		      <geometry>
+		        <box>
+		          <size>.2 .2 .2</size>
+		        </box>
+		      </geometry>
+			  <material>
+					<ambient>1 0 0 1</ambient>
+					<diffuse>1 0 0 1</diffuse>
+					<specular>0.1 0.1 0.1 1</specular>
+					<emissive>0 0 0 0</emissive>
+				</material>
+		    </visual>
+		  </link>
+		  <script>
+        <loop>true</loop>
+        <delay_start>0.000000</delay_start>
+        <auto_start>true</auto_start>
+        <trajectory id="0" type="square">
+           <waypoint>
+              <time>0.0</time>
+              <pose>-1 -1 1 0 0 0</pose>
+           </waypoint>
+           <waypoint>
+              <time>1.0</time>
+              <pose>-1 1 1 0 0 0</pose>
+           </waypoint>
+           <waypoint>
+              <time>2.0</time>
+              <pose>1 1 1 0 0 0</pose>
+           </waypoint>
+           <waypoint>
+              <time>3.0</time>
+              <pose>1 -1 1 0 0 0</pose>
+           </waypoint>
+           <waypoint>
+              <time>4.0</time>
+              <pose>-1 -1 1 0 0 0</pose>
+           </waypoint>
+        </trajectory>
+      </script>
+    </actor>
+	
     <physics name='default_physics' default='0' type='ode'>
       <gravity>0 0 -9.8066</gravity>
       <ode>
