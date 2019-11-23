@@ -61,6 +61,7 @@
 #include <OpticalFlow.pb.h>
 #include <Range.pb.h>
 #include <SITLGps.pb.h>
+#include <SITLAdsb.pb.h>
 #include <IRLock.pb.h>
 #include <Groundtruth.pb.h>
 #include <Odometry.pb.h>
@@ -96,6 +97,7 @@ typedef const boost::shared_ptr<const sensor_msgs::msgs::Range> LidarPtr;
 typedef const boost::shared_ptr<const sensor_msgs::msgs::SITLGps> GpsPtr;
 typedef const boost::shared_ptr<const sensor_msgs::msgs::MagneticField> MagnetometerPtr;
 typedef const boost::shared_ptr<const sensor_msgs::msgs::Pressure> BarometerPtr;
+typedef const boost::shared_ptr<const sensor_msgs::msgs::SITLAdsb> AdsbPtr;
 
 // Default values
 static const std::string kDefaultNamespace = "";
@@ -255,6 +257,7 @@ private:
   void VisionCallback(OdomPtr& odom_msg);
   void MagnetometerCallback(MagnetometerPtr& mag_msg);
   void BarometerCallback(BarometerPtr& baro_msg);
+  void AdsbCallback(AdsbPtr& adsb_msg);
   void send_mavlink_message(const mavlink_message_t *message);
   void forward_mavlink_message(const mavlink_message_t *message);
   void handle_message(mavlink_message_t *msg, bool &received_actuator);

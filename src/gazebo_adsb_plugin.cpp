@@ -16,12 +16,11 @@
  *
  */
 /**
- * @brief GPS Plugin
+ * @brief ADSB Plugin
  *
- * This plugin publishes GPS and Groundtruth data to be used and propagated
+ * This plugin publishes ADSB data to simulate manned aircraft and UTM
  *
- * @author Amy Wagoner <arwagoner@gmail.com>
- * @author Nuno Marques <nuno.marques@dronesolutions.io>
+ * @author Jaeyoung Lim <jaeyoung@auterion.com>
  */
 
 #include <gazebo_adsb_plugin.h>

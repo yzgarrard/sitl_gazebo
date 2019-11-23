@@ -127,6 +127,6 @@ private:
   static constexpr double gps_z_noise_density = 4e-4;     // (m) / sqrt(hz)
   static constexpr double gps_vxy_noise_density = 2e-1;   // (m/s) / sqrt(hz)
   static constexpr double gps_vz_noise_density = 4e-1;    // (m/s) / sqrt(hz)
-};     // class GAZEBO_VISIBLE GpsPlugin
+};     // class GAZEBO_VISIBLE AdsbPlugin
 }      // namespace gazebo
 #endif // _GAZEBO_ADSB_PLUGIN_HH_

@@ -1129,6 +1129,10 @@ void GazeboMavlinkInterface::BarometerCallback(BarometerPtr& baro_msg) {
   abs_pressure_ = baro_msg->absolute_pressure();
 }
 
+void GazeboMavlinkInterface::AdsbCallback(AdsbPtr& adsb_msg) {
+
+}
+
 void GazeboMavlinkInterface::pollForMAVLinkMessages()
 {
   if (gotSigInt_) {

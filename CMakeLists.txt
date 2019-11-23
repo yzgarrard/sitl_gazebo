@@ -278,6 +278,7 @@ set(sensor_msgs
   msgs/Float.proto
   msgs/Groundtruth.proto
   msgs/Range.proto
+  msgs/SITLAdsb.proto
   msgs/SITLGps.proto
   msgs/OpticalFlow.proto
   msgs/MagneticField.proto
