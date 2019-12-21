@@ -30,15 +30,15 @@
 		  <link name="link">
 		    <visual name="visual">
 		      <geometry>
-		        <box>
-		          <size>.2 .2 .2</size>
-		        </box>
+		        <sphere>
+		          <size>.1 .1 .1</size>
+		        </sphere>
 		      </geometry>
 			  <material>
 					<ambient>1 0 0 1</ambient>
 					<diffuse>1 0 0 1</diffuse>
-					<specular>0.1 0.1 0.1 1</specular>
-					<emissive>0 0 0 0</emissive>
+					<specular>0 0 0 0</specular>
+					<emissive>1 0 0 1</emissive>
 				</material>
 		    </visual>
 		  </link>
@@ -49,23 +49,15 @@
         <trajectory id="0" type="square">
            <waypoint>
               <time>0.0</time>
-              <pose>-1 -1 1 0 0 0</pose>
-           </waypoint>
-           <waypoint>
-              <time>1.0</time>
-              <pose>-1 1 1 0 0 0</pose>
-           </waypoint>
-           <waypoint>
-              <time>2.0</time>
-              <pose>1 1 1 0 0 0</pose>
-           </waypoint>
-           <waypoint>
-              <time>3.0</time>
-              <pose>1 -1 1 0 0 0</pose>
+              <pose>10 -10 10 0 0 0</pose>
            </waypoint>
            <waypoint>
               <time>4.0</time>
-              <pose>-1 -1 1 0 0 0</pose>
+              <pose>10 10 10 0 0 0</pose>
+           </waypoint>
+		   <waypoint>
+              <time>8.0</time>
+              <pose>10 -10 10 0 0 0</pose>
            </waypoint>
         </trajectory>
       </script>
