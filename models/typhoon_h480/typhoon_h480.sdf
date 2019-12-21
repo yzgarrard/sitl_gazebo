@@ -427,6 +427,7 @@
             <interval>1</interval>
             <width>3840</width>
             <height>2160</height>
+            <maximum_zoom>8.0</maximum_zoom>
         </plugin>
       </sensor>
     </link>
@@ -1143,7 +1144,7 @@
       <uri>model://sonar</uri>
     </include>
     <joint name="sonar_joint" type="revolute">
-      <child>sonar_model::link</child>
+      <child>sonar::link</child>
       <parent>typhoon_h480::base_link</parent>
       <axis>
         <xyz>0 0 1</xyz>
@@ -1575,9 +1576,9 @@
       <control_gimbal_channels>
         <channel>
           <joint_control_pid>
-            <p>1.0</p>
+            <p>0.8</p>
             <i>0.1</i>
-            <d>0.0005</d>
+            <d>0.02</d>
             <iMax>0</iMax>
             <iMin>0</iMin>
             <cmdMax>1.0</cmdMax>

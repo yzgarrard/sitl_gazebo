@@ -22,9 +22,11 @@
 
 
 #include <tinyxml.h>
+#include <typeinfo>
 #include <Eigen/Dense>
 #include <gazebo/gazebo.hh>
 #include <ignition/math.hh>
+#include "gazebo/physics/physics.hh"
 
 namespace gazebo {
 
@@ -229,5 +231,13 @@ static const auto q_ng = ignition::math::Quaterniond(0, 0.70711, 0.70711, 0);
  * to Forward, Left, Up (base_link) frames and vice-versa.
  */
 static const auto q_br = ignition::math::Quaterniond(0, 1, 0, 0);
+
+// sensor X-axis unit vector in `base_link` frame
+static const ignition::math::Vector3d kDownwardRotation = ignition::math::Vector3d(0, 0, -1);
+static const ignition::math::Vector3d kUpwardRotation = ignition::math::Vector3d(0, 0, 1);
+static const ignition::math::Vector3d kBackwardRotation = ignition::math::Vector3d(-1, 0, 0);
+static const ignition::math::Vector3d kForwardRotation = ignition::math::Vector3d(1, 0, 0);
+static const ignition::math::Vector3d kLeftRotation = ignition::math::Vector3d(0, 1, 0);
+static const ignition::math::Vector3d kRightRotation = ignition::math::Vector3d(0, -1, 0);
 
 #endif  // SITL_GAZEBO_COMMON_H_

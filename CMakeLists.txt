@@ -16,11 +16,9 @@ include(GNUInstallDirs)
 ## Find Dependencies ##
 #######################
 
-# Add search directory for CMake on OS X
-list(APPEND CMAKE_MODULE_PATH /usr/local/share/cmake/Modules)
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}/cmake")
 
-option(BUILD_GSTREAMER_PLUGIN "enable gstreamer plugin" OFF)
+option(BUILD_GSTREAMER_PLUGIN "enable gstreamer plugin" ON)
 option(BUILD_ROS_INTERFACE "Enable building ROS dependent plugins" OFF)
 
 option(SEND_VISION_ESTIMATION_DATA "Send Mavlink VISION_POSITION_ESTIMATE msgs" OFF)
@@ -50,7 +48,12 @@ find_package(TinyXML REQUIRED)
 
 pkg_check_modules(OGRE OGRE)
 
-include_directories(SYSTEM ${GAZEBO_INCLUDE_DIRS})
+if("${GAZEBO_VERSION}" VERSION_LESS "8.0")
+  include_directories(SYSTEM ${GAZEBO_INCLUDE_DIRS})
+else()
+  include_directories(SYSTEM ${GAZEBO_INCLUDE_DIRS} ${Qt5Core_INCLUDE_DIRS})
+endif()
+
 link_directories(${GAZEBO_LIBRARY_DIRS})
 
 add_subdirectory( external/OpticalFlow OpticalFlow )
@@ -103,7 +106,7 @@ endif()
 if("${GAZEBO_VERSION}" VERSION_LESS "6.0")
   message(FATAL_ERROR "You need at least Gazebo 6.0. Your version: ${GAZEBO_VERSION}")
 else()
-  message("Gazebo version: ${GAZEBO_VERSION}")
+  message(STATUS "Gazebo version: ${GAZEBO_VERSION}")
 endif()
 
 find_package(Eigen3 QUIET)
@@ -168,6 +171,8 @@ link_libraries(
 if (GSTREAMER_FOUND)
   link_libraries(
     ${GSTREAMER_LIBRARIES}
+    glib-2.0
+    gobject-2.0
   )
 endif()
 
