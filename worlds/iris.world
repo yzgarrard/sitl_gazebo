@@ -21,7 +21,7 @@
     </include>
 	
     <include>
-      <uri>model://iris_fpv_cam</uri>
+      <uri>model://iris_downward_cam</uri>
       <pose>0 0 0 0 0 0</pose>
     </include>
 	
