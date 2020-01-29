@@ -7,3 +7,5 @@ models/iris/*.sdf
 *.pyc
 .*.sw?
 *-gen.sdf
+.idea/
+cmake-build-debug/

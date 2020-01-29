@@ -25,13 +25,18 @@
       <pose>0 0 0 0 0 0</pose>
     </include>
 	
+	<include>
+		<uri>model://simple_sphere</uri>
+		<pose> 0.5 0 0 0 0 0 </pose>
+	</include>
+	
     <!-- An actor -->
-  	<actor name="animated_box">
+  	<!--<actor name="animated_box">
 		  <link name="link">
 		    <visual name="visual">
 		      <geometry>
 		        <sphere>
-		          <size>.1 .1 .1</size>
+		          <radius>.1</radius>
 		        </sphere>
 		      </geometry>
 			  <material>
@@ -61,7 +66,7 @@
            </waypoint>
         </trajectory>
       </script>
-    </actor>
+    </actor>-->
 	
     <physics name='default_physics' default='0' type='ode'>
       <gravity>0 0 -9.8066</gravity>

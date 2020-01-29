@@ -1,0 +1,32 @@
+<?xml version="1.0" ?>
+<sdf version="1.5">
+    <model name="small sphere">
+        <pose>0 0 1 0 0 0</pose>
+        <static>false</static>
+        <link name="link">
+            <velocity_decay>
+                <linear> 0.1 </linear>
+            </velocity_decay>
+            <inertial>
+                <mass>1.0</mass>
+            </inertial>
+            <gravity>0</gravity>
+
+        <visual name="visual">
+        <geometry>
+        <sphere>
+        <radius>.1</radius>
+        </sphere>
+        </geometry>
+        <material>
+        <ambient>1 0 0 1</ambient>
+        <diffuse>1 0 0 1</diffuse>
+        <specular>0 0 0 0</specular>
+        <emissive>1 0 0 1</emissive>
+        </material>
+        </visual>
+        </link>
+
+    <plugin name="pushed_by_drone" filename="libpushed_by_drone_plugin.so"/>
+    </model>
+</sdf>

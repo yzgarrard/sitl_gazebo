@@ -310,6 +310,7 @@ add_library(gazebo_wind_plugin SHARED src/gazebo_wind_plugin.cpp)
 add_library(gazebo_magnetometer_plugin SHARED src/gazebo_magnetometer_plugin.cpp src/geo_mag_declination.cpp)
 add_library(gazebo_barometer_plugin SHARED src/gazebo_barometer_plugin.cpp)
 add_library(hello_world_plugin SHARED src/hello_world.cpp)
+add_library(pushed_by_drone_plugin SHARED src/pushed_by_drone.cpp)
 
 set(plugins
   gazebo_geotagged_images_plugin
@@ -330,6 +331,7 @@ set(plugins
   gazebo_magnetometer_plugin
   gazebo_barometer_plugin
   hello_world_plugin
+  pushed_by_drone_plugin
   )
 
 foreach(plugin ${plugins})
