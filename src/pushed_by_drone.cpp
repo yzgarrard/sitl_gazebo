@@ -51,11 +51,11 @@ namespace gazebo {
                         i,
                         distance.X(),
                         distance.Y(),
-                        std::min(1/(distance.X()*distance.X()), 5.0) * ignition::math::signum(distance.X()),
-                        std::min(1/(distance.Y()*distance.Y()), 5.0) * ignition::math::signum(distance.Y()));
+                        std::min(1/(std::sqrt(std::pow(distance.X(), 2) + std::pow(distance.Z(), 2))), 5.0) * ignition::math::signum(distance.X()),
+                        std::min(1/(std::sqrt(std::pow(distance.Y(), 2) + std::pow(distance.Z(), 2))), 5.0) * ignition::math::signum(distance.Y()));
                 newForce = newForce + ignition::math::Vector3d(
-                        std::min(1/(distance.X()*distance.X()), 5.0) * ignition::math::signum(distance.X()),
-                        std::min(1/(distance.Y()*distance.Y()), 5.0) * ignition::math::signum(distance.Y()),
+                        std::min(1/(std::sqrt(std::pow(distance.X(), 2) + std::pow(distance.Z(), 2))), 5.0) * ignition::math::signum(distance.X()),
+                        std::min(1/(std::sqrt(std::pow(distance.Y(), 2) + std::pow(distance.Z(), 2))), 5.0) * ignition::math::signum(distance.Y()),
                         0);    //idk if division by zero will happen
             }
             this->link->AddForce(newForce);

@@ -5,7 +5,7 @@
         <static>false</static>
         <link name="link">
             <velocity_decay>
-                <linear> 0.1 </linear>
+                <linear> 0.2 </linear>
             </velocity_decay>
             <inertial>
                 <mass>1.0</mass>
