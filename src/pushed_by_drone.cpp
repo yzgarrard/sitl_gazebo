@@ -5,8 +5,11 @@
 #include <ignition/math/Vector3.hh>
 #include <ignition/math/Pose3.hh>
 #include <string>
+#include <random>
+#include <time.h>
 
 #define PRINT_VELOCITY_FROM_ROTORS true
+#define PRINT_VELOCITY_FROM_NOISE true
 
 namespace gazebo {
     class PushedByDrone : public ModelPlugin {
@@ -34,7 +37,16 @@ namespace gazebo {
     public:
         void OnUpdate() {
             auto velocityFromRotors = calculateVelocityDueToWindFromRotors();
-            this->link->SetLinearVel(velocityFromRotors);
+            if (counter % 500 == 0) {
+                velocityFromNoise = ignition::math::Vector3d(distribution(generator), distribution(generator), 0);
+                if (PRINT_VELOCITY_FROM_NOISE) {
+                    printf("Velocity vector on model due to noise:\n");
+                    printf("X:%f\tY:%f\n",
+                           velocityFromNoise.X(),
+                           velocityFromNoise.Y());
+                }
+            }
+            this->link->SetLinearVel(velocityFromRotors + velocityFromNoise);
             counter++;
         }
 
@@ -55,7 +67,7 @@ namespace gazebo {
                     windVelocityFromRotorsMagnitude * std::sin(std::atan2(distance.Y(), distance.X())) * 0.035,
                     0
             );
-            if (counter % 1000 == 0 && PRINT_VELOCITY_FROM_ROTORS) {
+            if (counter % 500 == 0 && PRINT_VELOCITY_FROM_ROTORS) {
                 printf("Velocity vector on model due to drone:\n");
                 printf("X:%f\tY:%f\n",
                        velocityFromRotors.X(),
@@ -70,8 +82,10 @@ namespace gazebo {
         physics::ModelPtr model;
         physics::LinkPtr link;
         physics::ModelPtr drone;
-        physics::Joint_V droneRotors;
         long long counter = 0;
+        std::default_random_engine generator;
+        std::normal_distribution<double> distribution{0.0, 0.05};
+        ignition::math::Vector3d velocityFromNoise = ignition::math::Vector3d(0.0, 0.0, 0.0);
 
 
         // Pointer to the update event connection

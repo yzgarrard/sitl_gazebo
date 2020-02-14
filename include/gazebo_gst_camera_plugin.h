@@ -35,56 +35,57 @@ namespace gazebo
 /**
  * @class GstCameraPlugin
  * A Gazebo plugin that can be attached to a camera and then streams the video data using gstreamer.
- * It streams to a configurable UDP port, default is 5600.
+ * It streams to a configurable UDP IP and UDP Port, defaults are respectively 127.0.0.1 and 5600.
  *
  * Connect to the stream via command line with:
  * gst-launch-1.0  -v udpsrc port=5600 caps='application/x-rtp, media=(string)video, clock-rate=(int)90000, encoding-name=(string)H264' \
  *  ! rtph264depay ! avdec_h264 ! videoconvert ! autovideosink fps-update-interval=1000 sync=false
  */
-class GAZEBO_VISIBLE GstCameraPlugin : public SensorPlugin
-{
-  public: GstCameraPlugin();
+    class GAZEBO_VISIBLE GstCameraPlugin : public SensorPlugin
+    {
+    public: GstCameraPlugin();
 
-  public: virtual ~GstCameraPlugin();
+    public: virtual ~GstCameraPlugin();
 
-  public: virtual void Load(sensors::SensorPtr sensor, sdf::ElementPtr sdf);
+    public: virtual void Load(sensors::SensorPtr sensor, sdf::ElementPtr sdf);
 
-  public: virtual void OnNewFrame(const unsigned char *image,
-		unsigned int width, unsigned int height,
-		unsigned int depth, const std::string &format);
+    public: virtual void OnNewFrame(const unsigned char *image,
+                                    unsigned int width, unsigned int height,
+                                    unsigned int depth, const std::string &format);
 
-  public: void startGstThread();
-  public: void stopGstThread();
-  public: void gstCallback(GstElement *appsrc);
+    public: void startGstThread();
+    public: void stopGstThread();
+    public: void gstCallback(GstElement *appsrc);
 
-  public: void cbVideoStream(const boost::shared_ptr<const msgs::Int> &_msg);
-  private: void startStreaming();
-  private: void stopStreaming();
+    public: void cbVideoStream(const boost::shared_ptr<const msgs::Int> &_msg);
+    private: void startStreaming();
+    private: void stopStreaming();
 
-  protected: unsigned int width, height, depth;
-  float rate;
-  protected: std::string format;
+    protected: unsigned int width, height, depth;
+        float rate;
+    protected: std::string format;
 
-  protected: int udpPort;
+    protected: std::string udpHost;
+    protected: int udpPort;
 
-  protected: sensors::CameraSensorPtr parentSensor;
-  protected: rendering::CameraPtr camera;
+    protected: sensors::CameraSensorPtr parentSensor;
+    protected: rendering::CameraPtr camera;
 
-  private: event::ConnectionPtr newFrameConnection;
+    private: event::ConnectionPtr newFrameConnection;
 
-  private: transport::NodePtr node_handle_;
-  private: std::string namespace_;
+    private: transport::NodePtr node_handle_;
+    private: std::string namespace_;
 
-  private: transport::SubscriberPtr mVideoSub;
-  private: pthread_t mThreadId;
-  private: const std::string mTopicName = "~/video_stream";
-  private: bool mIsActive;
+    private: transport::SubscriberPtr mVideoSub;
+    private: pthread_t mThreadId;
+    private: const std::string mTopicName = "~/video_stream";
+    private: bool mIsActive;
 
-  GstBuffer *frameBuffer;
-  std::mutex frameBufferMutex;
-  GMainLoop *mainLoop;
-  GstClockTime gstTimestamp;
+        GstBuffer *frameBuffer;
+        std::mutex frameBufferMutex;
+        GMainLoop *mainLoop;
+        GstClockTime gstTimestamp;
 
-};
+    };
 
 } /* namespace gazebo */

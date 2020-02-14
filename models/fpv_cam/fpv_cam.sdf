@@ -40,10 +40,10 @@
         </visual>
         <sensor name='camera' type='camera'>
           <camera name='__default__'>
-            <horizontal_fov>1.047</horizontal_fov>
+            <horizontal_fov>1.62</horizontal_fov>
             <image>
-              <width>320</width>
-              <height>240</height>
+              <width>640</width>
+              <height>480</height>
             </image>
             <clip>
               <near>0.1</near>
