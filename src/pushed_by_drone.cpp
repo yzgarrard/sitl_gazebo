@@ -37,7 +37,7 @@ namespace gazebo {
     public:
         void OnUpdate() {
             auto velocityFromRotors = calculateVelocityDueToWindFromRotors();
-            if (counter % 500 == 0) {
+            if (counter % 125 == 0) {
                 velocityFromNoise = ignition::math::Vector3d(distribution(generator), distribution(generator), 0);
                 if (PRINT_VELOCITY_FROM_NOISE) {
                     printf("Velocity vector on model due to noise:\n");
