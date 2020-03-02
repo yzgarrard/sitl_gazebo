@@ -41,27 +41,16 @@ else()
 endif()
 find_package(OpenCV REQUIRED)
 find_package(TinyXML REQUIRED)
-if (BUILD_GSTREAMER_PLUGIN)
+#if (BUILD_GSTREAMER_PLUGIN)
   set(GStreamer_FIND_VERSION "1.0")
-  find_package(GStreamer REQUIRED)
-  if (GSTREAMER_FOUND)
-    if("${GAZEBO_VERSION}" VERSION_LESS "8.0")
-      find_package (Qt4)
-      include (${QT_USE_FILE})
-    else()
-      # In order to find Qt5 in macOS, the Qt5 path needs to be added to the CMake prefix path.
-      if(APPLE)
-        execute_process(COMMAND brew --prefix qt5
-                        ERROR_QUIET
-                        OUTPUT_VARIABLE QT5_PREFIX_PATH
-                        OUTPUT_STRIP_TRAILING_WHITESPACE
-                       )
-        list(APPEND CMAKE_PREFIX_PATH "${QT5_PREFIX_PATH}/lib/cmake")
-      endif()
-      find_package(Qt5 COMPONENTS Core Widgets REQUIRED)
-    endif()
-  endif()
-endif()
+  find_package(GStreamer)
+  #if (GSTREAMER_FOUND)
+    #if("${GAZEBO_VERSION}" VERSION_LESS "8.0")
+      #find_package (Qt5Widgets)
+      #include (${QT_USE_FILE})
+    #endif()
+  #endif()
+#endif()
 
 pkg_check_modules(OGRE OGRE)
 
@@ -327,6 +316,8 @@ add_library(gazebo_multirotor_base_plugin SHARED src/gazebo_multirotor_base_plug
 add_library(gazebo_wind_plugin SHARED src/gazebo_wind_plugin.cpp)
 add_library(gazebo_magnetometer_plugin SHARED src/gazebo_magnetometer_plugin.cpp src/geo_mag_declination.cpp)
 add_library(gazebo_barometer_plugin SHARED src/gazebo_barometer_plugin.cpp)
+add_library(hello_world_plugin SHARED src/hello_world.cpp)
+add_library(pushed_by_drone_plugin SHARED src/pushed_by_drone.cpp)
 add_library(gazebo_catapult_plugin SHARED src/gazebo_catapult_plugin.cpp)
 add_library(gazebo_usv_dynamics_plugin SHARED src/gazebo_usv_dynamics_plugin.cpp)
 
@@ -349,6 +340,8 @@ set(plugins
   gazebo_wind_plugin
   gazebo_magnetometer_plugin
   gazebo_barometer_plugin
+  hello_world_plugin
+  pushed_by_drone_plugin
   gazebo_catapult_plugin
   gazebo_usv_dynamics_plugin
   )
@@ -379,33 +372,27 @@ if (BUILD_ROS_INTERFACE)
   )
 endif()
 
-if (GSTREAMER_FOUND)
+#if (GSTREAMER_FOUND)
   add_library(gazebo_gst_camera_plugin SHARED src/gazebo_gst_camera_plugin.cpp)
   set(plugins
     ${plugins}
     gazebo_gst_camera_plugin
   )
   message(STATUS "Found GStreamer: adding gst_camera_plugin")
-  if("${GAZEBO_VERSION}" VERSION_LESS "8.0")
-    QT4_WRAP_CPP(headers_MOC include/gazebo_video_stream_widget.h)
-    add_library(gazebo_video_stream_widget SHARED ${headers_MOC} src/gazebo_video_stream_widget.cpp)
-    target_link_libraries(gazebo_video_stream_widget ${GAZEBO_LIBRARIES} ${QT_LIBRARIES} ${PROTOBUF_LIBRARIES})
-    set(plugins
-      ${plugins}
-      gazebo_video_stream_widget
-    )
-    message(STATUS "Found GStreamer: adding gst_video_stream_widget")
-  else()
+  #if("${GAZEBO_VERSION}" VERSION_LESS "8.0")
+    find_package( Qt5Core REQUIRED )
+    find_package( Qt5Widgets REQUIRED )
+    find_package( Qt5Gui REQUIRED )
     QT5_WRAP_CPP(headers_MOC include/gazebo_video_stream_widget.h)
     add_library(gazebo_video_stream_widget SHARED ${headers_MOC} src/gazebo_video_stream_widget.cpp)
-    target_link_libraries(gazebo_video_stream_widget ${GAZEBO_LIBRARIES} ${Qt5Core_LIBRARIES} ${Qt5Widgets_LIBRARIES} ${PROTOBUF_LIBRARIES} ${Qt5Test_LIBRARIES})
+    target_link_libraries(gazebo_video_stream_widget ${GAZEBO_LIBRARIES} ${QT_LIBRARIES} ${PROTOBUF_LIBRARIES} Qt5::Core)
     set(plugins
       ${plugins}
       gazebo_video_stream_widget
     )
     message(STATUS "Found GStreamer: adding gst_video_stream_widget")
-  endif()
-endif()
+  #endif()
+#endif()
 
 # Linux is not consistent with plugin availability, even on Gazebo 7
 #if("${GAZEBO_VERSION}" VERSION_LESS "7.0")

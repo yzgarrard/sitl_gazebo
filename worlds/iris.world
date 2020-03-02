@@ -1,22 +1,73 @@
 <?xml version="1.0" ?>
 <sdf version="1.5">
   <world name="default">
+    <gui>
+      <plugin name="video_widget" filename="libgazebo_video_stream_widget.so"/>
+    </gui>
+	<plugin name="hello_world" filename="libhello_world_plugin.so"/>
     <!-- A global light source -->
     <include>
       <uri>model://sun</uri>
     </include>
+	
     <!-- A ground plane -->
     <include>
       <uri>model://ground_plane</uri>
     </include>
+	
     <!-- An asphalt plane -->
     <include>
       <uri>model://asphalt_plane</uri>
     </include>
+	
     <include>
-      <uri>model://iris</uri>
-      <pose>1.01 0.98 0.83 0 0 1.14</pose>
+      <uri>model://iris_downward_cam</uri>
+      <pose>0 0 0 0 0 0</pose>
     </include>
+	
+	<include>
+		<uri>model://simple_sphere</uri>
+		<pose> 0.5 0 0 0 0 0 </pose>
+	</include>
+	
+    <!-- An actor -->
+  	<!--<actor name="animated_box">
+		  <link name="link">
+		    <visual name="visual">
+		      <geometry>
+		        <sphere>
+		          <radius>.1</radius>
+		        </sphere>
+		      </geometry>
+			  <material>
+					<ambient>1 0 0 1</ambient>
+					<diffuse>1 0 0 1</diffuse>
+					<specular>0 0 0 0</specular>
+					<emissive>1 0 0 1</emissive>
+				</material>
+		    </visual>
+		  </link>
+		  <script>
+        <loop>true</loop>
+        <delay_start>0.000000</delay_start>
+        <auto_start>true</auto_start>
+        <trajectory id="0" type="square">
+           <waypoint>
+              <time>0.0</time>
+              <pose>10 -10 10 0 0 0</pose>
+           </waypoint>
+           <waypoint>
+              <time>4.0</time>
+              <pose>10 10 10 0 0 0</pose>
+           </waypoint>
+		   <waypoint>
+              <time>8.0</time>
+              <pose>10 -10 10 0 0 0</pose>
+           </waypoint>
+        </trajectory>
+      </script>
+    </actor>-->
+	
     <physics name='default_physics' default='0' type='ode'>
       <gravity>0 0 -9.8066</gravity>
       <ode>
