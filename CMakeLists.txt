@@ -32,7 +32,13 @@ find_package(Boost 1.58 REQUIRED COMPONENTS system thread filesystem)
 find_package(gazebo REQUIRED)
 find_package(PkgConfig REQUIRED)
 find_program(px4 REQUIRED)
-find_package(PythonInterp REQUIRED)
+# Note: If using catkin, Python 2 is found since it points
+# to the Python libs installed with the ROS distro
+if (NOT CATKIN_DEVEL_PREFIX)
+	find_package(PythonInterp 3 REQUIRED)
+else()
+	find_package(PythonInterp REQUIRED)
+endif()
 find_package(OpenCV REQUIRED)
 find_package(TinyXML REQUIRED)
 #if (BUILD_GSTREAMER_PLUGIN)
@@ -127,8 +133,8 @@ endif()
 ## Build ##
 ###########
 
-set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -std=c99 -Wno-deprecated-declarations")
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-deprecated-declarations")
+set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -std=c99 -Wno-deprecated-declarations -Wno-address-of-packed-member")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-deprecated-declarations -Wno-address-of-packed-member")
 
 set(GAZEBO_MSG_INCLUDE_DIRS)
 foreach(ITR ${GAZEBO_INCLUDE_DIRS})
@@ -296,6 +302,7 @@ add_library(gazebo_geotagged_images_plugin SHARED src/gazebo_geotagged_images_pl
 add_library(gazebo_gps_plugin SHARED src/gazebo_gps_plugin.cpp)
 add_library(gazebo_irlock_plugin SHARED src/gazebo_irlock_plugin.cpp)
 add_library(gazebo_lidar_plugin SHARED src/gazebo_lidar_plugin.cpp)
+add_library(gazebo_opticalflow_mockup_plugin SHARED src/gazebo_opticalflow_mockup_plugin.cpp)
 add_library(gazebo_opticalflow_plugin SHARED src/gazebo_opticalflow_plugin.cpp)
 add_library(gazebo_sonar_plugin SHARED src/gazebo_sonar_plugin.cpp)
 add_library(gazebo_uuv_plugin SHARED src/gazebo_uuv_plugin.cpp)
@@ -311,12 +318,15 @@ add_library(gazebo_magnetometer_plugin SHARED src/gazebo_magnetometer_plugin.cpp
 add_library(gazebo_barometer_plugin SHARED src/gazebo_barometer_plugin.cpp)
 add_library(hello_world_plugin SHARED src/hello_world.cpp)
 add_library(pushed_by_drone_plugin SHARED src/pushed_by_drone.cpp)
+add_library(gazebo_catapult_plugin SHARED src/gazebo_catapult_plugin.cpp)
+add_library(gazebo_usv_dynamics_plugin SHARED src/gazebo_usv_dynamics_plugin.cpp)
 
 set(plugins
   gazebo_geotagged_images_plugin
   gazebo_gps_plugin
   gazebo_irlock_plugin
   gazebo_lidar_plugin
+  gazebo_opticalflow_mockup_plugin
   gazebo_opticalflow_plugin
   gazebo_sonar_plugin
   gazebo_uuv_plugin
@@ -332,6 +342,8 @@ set(plugins
   gazebo_barometer_plugin
   hello_world_plugin
   pushed_by_drone_plugin
+  gazebo_catapult_plugin
+  gazebo_usv_dynamics_plugin
   )
 
 foreach(plugin ${plugins})
