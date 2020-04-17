@@ -320,6 +320,10 @@ add_library(hello_world_plugin SHARED src/hello_world.cpp)
 add_library(pushed_by_drone_plugin SHARED src/pushed_by_drone.cpp)
 add_library(gazebo_catapult_plugin SHARED src/gazebo_catapult_plugin.cpp)
 add_library(gazebo_usv_dynamics_plugin SHARED src/gazebo_usv_dynamics_plugin.cpp)
+add_library(DSCC_2020_init_plugin SHARED src/DSCC_2020_init_plugin.cpp)
+add_library(FPVCamZeroInit_plugin SHARED src/fpv_cam_0_init_plugin.cpp)
+add_library(FPVCamOneInit_plugin SHARED src/fpv_cam_1_init_plugin.cpp)
+
 
 set(plugins
   gazebo_geotagged_images_plugin
@@ -344,6 +348,9 @@ set(plugins
   pushed_by_drone_plugin
   gazebo_catapult_plugin
   gazebo_usv_dynamics_plugin
+  DSCC_2020_init_plugin
+  FPVCamZeroInit_plugin
+  FPVCamOneInit_plugin
   )
 
 foreach(plugin ${plugins})
